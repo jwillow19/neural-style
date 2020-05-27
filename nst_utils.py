@@ -42,10 +42,10 @@ def load_vgg_model(path):
         W = wb[0][0]
         b = wb[0][1]
         layer_name = vgg_layers[0][layer][0][0][0][0]
-        assert layer_name == expected_layer_name
+        # assert layer_name == expected_layer_name
         return W, b
 
-        return W, b
+        # return W, b
 
     def _relu(conv2d_layer):
         """
@@ -62,7 +62,7 @@ def load_vgg_model(path):
         W, b = _weights(layer, layer_name)
         W = tf.constant(W)
         b = tf.constant(b)
-        return tf.nn.conv2d(prev_layer, filter=W, strides=[1, 1, 1, 1], padding='SAME', name='Conv2D') + b
+        return tf.nn.conv2d(prev_layer, filters=W, strides=[1, 1, 1, 1], padding='SAME') + b
 
     def _conv2d_relu(prev_layer, layer, layer_name):
         """
