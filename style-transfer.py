@@ -1,14 +1,18 @@
-import os
-import sys
-import scipy.io
-import scipy.misc
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import imshow
-from PIL import Image
-from nst_utils import *
+import functools
+import time
+import PIL.Image
 import numpy as np
+
+import tensorflow_hub as hub
 import tensorflow as tf
-import pprint
+
+import IPython.display as display
+
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+mpl.rcParams['figure.figsize'] = (12, 12)
+mpl.rcParams['axes.grid'] = False
+
 # %matplotlib inline
 
 # Load the pretrained model
@@ -47,7 +51,7 @@ def load_img(path_to_img):
 
 def imshow(image, title=None):
     """
-    function displays an image 
+    function displays an image
     """
     if len(image.shape) > 3:
         image = tf.squeeze(image, axis=0)
@@ -67,3 +71,10 @@ imshow(content_image, 'Content Image')
 
 plt.plot(1, 2, 2)
 imshow(style_image, 'Style Image')
+
+# Using a preexisting Neural Style module from tensorflow hub to do style transfer
+hub_module = hub.load(
+    'https://tfhub.dev/google/magenta/arbitrary-image-stylization-v1-256/1')
+stylized_image = hub_module(tf.constant(
+    content_image), tf.constant(style_image))[0]
+tensor_to_image(stylized_image).show()
