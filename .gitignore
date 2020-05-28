@@ -1,5 +1,6 @@
  
 *.mat
+*.odt
 env/
 .idea
 __pycache__
