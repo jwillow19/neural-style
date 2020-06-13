@@ -1,8 +1,12 @@
  
 *.mat
 *.odt
+*.png
 env/
 .idea
 __pycache__
 *.pyc
 *.jpg
+
+.ipynb_checkpoints/
+working_neural_style.ipynb
