@@ -3,7 +3,7 @@ import time
 from PIL import Image
 import numpy as np
 import cv2
-
+import streamlit as st
 # import tensorflow_hub as hub
 import tensorflow as tf
 
@@ -108,6 +108,7 @@ class StyleContentModel(tf.keras.models.Model):
         self.vgg.trainable = False
 
     # call Class Method
+
     def call(self, inputs):
         '''
         INPUT: image 
@@ -148,6 +149,7 @@ def clip_0_1(image):
 
 
 # Loss function: linear combination of style and content loss
+@st.cache
 def style_content_loss(outputs, style_target, content_target, style_weight=1e-2, content_weight=1e4, num_style_layers=5, num_content_layers=1):
     '''
     INPUT: output = model(image)
@@ -183,3 +185,10 @@ def train_step(image):
         # apply gradients to optimization algorithm for iamge update
         opt.apply_gradients([(grad, image)])
         image.assign(clip_0_1(image))
+
+
+@st.cache
+def adam_optimizer(lr=1e-2, beta_1=0.99, epsilon=1e-1):
+    opt = tf.optimizers.Adam(
+        learning_rate=lr, beta_1=beta_1, epsilon=epsilon)
+    return opt
